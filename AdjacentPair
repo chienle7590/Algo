@@ -1,0 +1,75 @@
+package Hw;
+
+import java.util.HashMap;
+
+public class AdjacentPair {
+	
+	public static int Solution(int[] a) {
+		
+		int maxChange = 0;
+		
+		int totalAdjacentPair = calculateInitialAdjacentPairs(a);
+		
+		for (int value : setupTheHashMap(a).values()) {
+			
+			maxChange = Math.max(maxChange, value);
+		};
+		
+		return totalAdjacentPair + maxChange;
+		
+	}
+	
+	//Helper functions
+	
+	public static int calculateInitialAdjacentPairs(int[] a) {
+		
+		int initialAdjacentPair = 0;
+		
+		for (int i = 1; i < a.length ;i++) 
+			{
+				if (a[i] == a[i-1]) initialAdjacentPair++;
+				
+			}
+		
+		return initialAdjacentPair;
+		
+	}
+	
+	public static HashMap<Integer, Integer> setupTheHashMap(int[] a) {
+		HashMap<Integer, Integer> map = new HashMap<>();
+		
+		
+		for (int i = 0 ; i < a.length; i++) {
+			
+			int numberOfPairAfterFlip = 0;
+			
+			int numberOfPairBeforeFlip = 0;
+			
+			if(i>0 && a[i] == a[i-1]) numberOfPairBeforeFlip++;
+			
+			if(i<a.length - 1  && a[i] == a[i+1]) numberOfPairBeforeFlip++;
+				
+			int fippedValue = (a[i] == 0) ? 1 : 0; 
+				
+			if ( i > 0 && fippedValue == a[i-1]) numberOfPairAfterFlip++;
+			
+			if (i< a.length -1 && fippedValue == a[i+1]) numberOfPairAfterFlip++;
+			
+			int changes = numberOfPairAfterFlip - numberOfPairBeforeFlip;
+			
+			map.put(i,changes);
+		}
+		
+		return map;
+		
+		
+	}
+
+	public static void main(String[] args) {
+		int[] test1 = {1, 1, 0, 1, 0, 0, 1, 1};
+		//int[] test1 = {0, 1, 0, 0, 1};
+		
+		System.out.println("Result: " + Solution(test1));
+		
+	}
+}
