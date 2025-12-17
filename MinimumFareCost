@@ -1,0 +1,48 @@
+public class MinimumFareCost {
+	    public int solution(int[] A) {
+	        if (A == null || A.length == 0) {
+	            return 0;
+	        }
+
+	        int numberOfTravelDays = A.length;
+
+	        if (numberOfTravelDays == 1) {
+	            return 2;
+	        }
+
+	        if (numberOfTravelDays >= 23) {
+	            return 25;
+	        }
+
+	        boolean[] isTravelDay = new boolean[31];
+	        for (int day : A) {
+	            isTravelDay[day] = true;
+	        }
+
+	        int[] accumulatedCost = new int[31];
+
+	        for (int i = 1; i <= 30; i++) {
+	            if (!isTravelDay[i]) {
+	                accumulatedCost[i] = accumulatedCost[i - 1];
+	                continue;
+	            }
+
+	            int costWith1DayTicket = accumulatedCost[i - 1] + 2;
+	            int costWith7DayTicket = accumulatedCost[Math.max(0, i - 7)] + 7;
+	            int costWith30DayTicket = 25;
+
+	            accumulatedCost[i] = Math.min(costWith1DayTicket, 
+	                                 Math.min(costWith7DayTicket, costWith30DayTicket));
+	        }
+
+	        return accumulatedCost[30];
+	    }
+
+
+	    public static void main(String[] args) {
+	    	MinimumFareCost sol = new MinimumFareCost();
+
+	    	int[] example = {1, 2, 4, 5, 7, 29, 30};
+	    	System.out.println(sol.solution(example));
+	    }
+}
