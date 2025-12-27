@@ -1,0 +1,53 @@
+package Hw;
+import java.util.*;
+
+public class FlightTicketBooking {
+	public static int Solution(int N , String S) {
+		if (S.trim().isEmpty()) return N * 3;
+		
+		//Split String
+		String[] seats = S.trim().split("\\s+");
+		
+		//Create a collection of row and column
+		Map<Integer, Set<Character>> bookedSeats = new HashMap<>();
+		
+		for (String seat : seats) {
+			int row = Integer.parseInt(seat.substring(0, seat.length() - 1));
+			char column = seat.charAt(seat.length() - 1);
+			
+			bookedSeats.put(row, new HashSet<>());
+			bookedSeats.get(row).add(column);
+			
+		}
+		
+		int count = 0;
+		
+		for (Map.Entry<Integer, Set<Character>> i : bookedSeats.entrySet()){
+			
+			Set<Character> reserved = i.getValue();
+			
+			boolean fitA2C = reserved.contains('A') ||
+							 reserved.contains('B') ||
+                             reserved.contains('C');
+			
+			boolean fitD2F = reserved.contains('E') ||
+					 		 reserved.contains('F');
+			
+			boolean fitH2K = reserved.contains('H') ||
+					 		 reserved.contains('J') ||
+					 		 reserved.contains('K');
+			
+			if (fitA2C) count ++;
+			if (fitD2F) count ++;
+			if (fitH2K) count ++;
+		} 
+		
+		return N*3 - count;
+	}
+	
+	public static void main(String[] args) {
+        //String s = "1A 2F 1C 5E";
+        String s = "1A 2F 1C";
+        System.out.println("count:" + Solution(2, s));
+    }
+}
